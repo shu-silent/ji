@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
+use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
@@ -24,7 +25,14 @@ class ItemController extends Controller
     public function index()
     {
         // 商品一覧取得
-        $items = Item::all();
+        // $items = Item::all();
+
+        // ユーザーを特定し、そのユーザーの所有データのみを表示
+        $user = auth::user();
+
+        if($user) {
+            $items = DB::table('items')->where('user_id',$user->id)->get();
+        }
 
         return view('item.index', compact('items'));
     }
