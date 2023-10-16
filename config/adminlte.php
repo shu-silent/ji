@@ -63,7 +63,8 @@ return [
     |
     */
 
-    'logo' => '<b>商品管理</b>',
+    'logo' => '<div style="display: flex; align-items: center;"><b>Book一覧</b> <a href="/book/book" class="btn btn-primary" style="margin-left: 10px;">＋</a></div>',
+
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -291,9 +292,9 @@ return [
 
     'menu' => [
         [
-            'text' => '商品一覧',
+            'text' => '一覧',
             'url'  => 'items',
-            'icon' => 'fas fa-gamepad',
+            'icon' => 'fas fa-gamepad',    
         ],
 
         // AdminLTEデフォルト

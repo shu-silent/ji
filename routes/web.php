@@ -26,3 +26,12 @@ Route::prefix('items')->group(function () {
     Route::get('/add', [App\Http\Controllers\ItemController::class, 'add']);
     Route::post('/add', [App\Http\Controllers\ItemController::class, 'add']);
 });
+
+
+
+Route::get('/book/book', [App\Http\Controllers\BookController::class, 'view'])->name('book.view');
+
+Route::post('/book/book', [App\Http\Controllers\BookController::class, 'add'])->name('book.add');
+
+
+Route::get('/', [App\Http\Controllers\BookController::class, 'index']);
