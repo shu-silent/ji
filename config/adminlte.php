@@ -292,10 +292,21 @@ return [
 
     'menu' => [
         [
-            'text' => '一覧',
-            'url'  => 'items',
-            'icon' => 'fas fa-gamepad',    
+            // 'text' => '一覧',
+            // 'url'  => 'items',
+            // 'icon' => 'fas fa-gamepad',
+
+
         ],
+
+        [
+            // 'text' => 'Books',
+            // 'url' => 'books',
+            // 'icon' => 'fas fa-book',
+            'submenu' => [],
+        ],
+
+
 
         // AdminLTEデフォルト
         /*

@@ -9,10 +9,6 @@
 @section('content')
     <p>Welcome to this beautiful admin panel.</p>
 
-    @foreach ($books as $book)
-        <p>{{ $book->name }}</p>
-    @endforeach
-
 
 @stop
 

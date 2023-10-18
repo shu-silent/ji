@@ -33,17 +33,20 @@ class BookController extends Controller
         
     }
 
-    public function index()
-    {
-        // 現在ログイン中のユーザーに関連するbooksデータを取得
-        $user = auth::user();
+    // public function index()
+    // {
+    //     // 現在ログイン中のユーザーに関連するbooksデータを取得
+    //     $user = auth::user();
 
-        if($user) {
-            $books = DB::table('books')->where('user_id',$user->id)->get();
-        }
+    //     if($user) {
+    //         $books = DB::table('books')->where('user_id',$user->id)->get();
+    //     }
+        
+    //     config(['adminlte.custom_data' => $books]);
 
-        return view('/home', compact('books'));
-    }
+    //     return view('/home');
+    //     // return view('/layouts/adminlte', compact('books'));
+    // }
 
 
 

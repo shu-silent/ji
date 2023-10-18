@@ -34,4 +34,4 @@ Route::get('/book/book', [App\Http\Controllers\BookController::class, 'view'])->
 Route::post('/book/book', [App\Http\Controllers\BookController::class, 'add'])->name('book.add');
 
 
-Route::get('/', [App\Http\Controllers\BookController::class, 'index']);
+// Route::get('/', [App\Http\Controllers\BookController::class, 'index']);
