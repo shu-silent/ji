@@ -13,7 +13,7 @@ class BookController extends Controller
 {
     public function view()
     {
-        return view('book.book');
+        return view('books.add');
     }
 
     public function add(Request $request)
@@ -24,12 +24,12 @@ class BookController extends Controller
         ]);
 
         // 商品登録
-        Book::create([
+        $book = Book::create([
             'user_id' => Auth::user()->id,
             'name' => $request->name
         ]);
 
-        return redirect('');
+        return redirect()->route('book.detail', ['id' => $book->id]);
         
     }
 
@@ -47,6 +47,15 @@ class BookController extends Controller
     //     return view('/home');
     //     // return view('/layouts/adminlte', compact('books'));
     // }
+
+    public function show($id)
+    {
+        // $id を使用してデータベースから該当の BOOK の詳細情報を取得
+        $book = Book::find($id);
+
+        // ビューにデータを渡して詳細情報を表示
+        return view('books.detail', ['book' => $book]);
+    }
 
 
 

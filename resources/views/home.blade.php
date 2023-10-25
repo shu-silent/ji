@@ -8,8 +8,8 @@
 
 @section('content')
     <p>Welcome to this beautiful admin panel.</p>
-
-
+    
+    
 @stop
 
 @section('css')
@@ -17,6 +17,5 @@
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
-@stop
 
+@stop

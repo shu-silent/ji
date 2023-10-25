@@ -62,4 +62,18 @@ class ItemController extends Controller
 
         return view('item.add');
     }
+
+    public function view(Request $request)
+    {
+        Item::create([
+            'user_id' => Auth::user()->id,
+            'url' => $request->url,
+            'book_id' => $request->book_id,
+
+        ]);
+
+        return redirect('');
+
+    }
+
 }

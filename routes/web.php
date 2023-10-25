@@ -29,9 +29,13 @@ Route::prefix('items')->group(function () {
 
 
 
-Route::get('/book/book', [App\Http\Controllers\BookController::class, 'view'])->name('book.view');
+Route::get('/books/add', [App\Http\Controllers\BookController::class, 'view'])->name('book.view');
 
-Route::post('/book/book', [App\Http\Controllers\BookController::class, 'add'])->name('book.add');
+Route::post('/books/add', [App\Http\Controllers\BookController::class, 'add'])->name('book.add');
 
 
 // Route::get('/', [App\Http\Controllers\BookController::class, 'index']);
+
+Route::get('/books/{id}', [App\Http\Controllers\BookController::class, 'show'])->name('book.detail');
+
+Route::post('/books/{id}', [App\Http\Controllers\ItemController::class, 'view']);

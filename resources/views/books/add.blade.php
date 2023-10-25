@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'book追加')
+@section('title', 'BookAdd')
 
 @section('content_header')
-    <h1>book追加</h1>
+    <h1>New Book Add</h1>
 @stop
 
 @section('content')

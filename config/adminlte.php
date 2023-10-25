@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<div style="display: flex; align-items: center;"><b>Book一覧</b> <a href="/book/book" class="btn btn-primary" style="margin-left: 10px;">＋</a></div>',
+    'logo' => '<div style="display: flex; align-items: center;"><b>New Book</b> <a href="/books/add" class="btn btn-primary" style="margin-left: 10px;">＋</a></div>',
 
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
@@ -299,14 +299,18 @@ return [
 
         ],
 
-        [
-            // 'text' => 'Books',
-            // 'url' => 'books',
-            // 'icon' => 'fas fa-book',
-            'submenu' => [],
-        ],
+        // [
+        //     'text' => 'Books',
+        //     'url' => 'books',
+        //     'icon' => 'fas fa-book',
+        //     'submenu' => [],
+        // ],
 
-
+        // [
+        //     'text' => 'Main Navigation',
+        //     'url' => '#',
+        //     'topnav' => true,
+        // ],
 
         // AdminLTEデフォルト
         /*
