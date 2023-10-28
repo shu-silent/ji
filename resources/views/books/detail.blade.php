@@ -8,7 +8,20 @@
 
 @section('content')
     
-    <button id="add-item-button" class="btn btn-default">+</button>   
+    <button id="add-item-button" class="btn btn-default">+</button>  
+    
+    @if(session('relatedItems'))
+    <ul>
+        @foreach(session('relatedItems') as $item)
+            <li>
+                URL: <a href="{{ $item->url }}">{{ $item->url }}</a>
+                <!-- 他のアイテム情報を表示 -->
+            </li>
+        @endforeach
+    </ul>
+    @else
+        <p>No related items found.</p>
+    @endif
 
     <!-- ポップアップのHTML -->
     <div id="popup" class="card card-primary" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; width: 600px;">

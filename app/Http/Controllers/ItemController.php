@@ -65,15 +65,29 @@ class ItemController extends Controller
 
     public function view(Request $request)
     {
+        
+        $user = Auth::user();
+
         Item::create([
-            'user_id' => Auth::user()->id,
+            'user_id' => $user->id,
             'url' => $request->url,
             'book_id' => $request->book_id,
 
         ]);
 
-        return redirect('');
+        
+        // // 同じ book_id を持つアイテムを取得
+        // $relatedItems = Item::where('user_id', $user->id)
+        //                     ->where('book_id', $request->book_id)
+        //                     ->get();
+
+        // // その他の必要な処理
+        // // データをセッションに保存
+        // session(['relatedItems' => $relatedItems]);
+        // リダイレクト先を指定（詳細ページに戻るなど）
+
+        return redirect()->route('book.detail', ['id' => $request->book_id]);
 
     }
-
+    
 }

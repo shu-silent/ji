@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Book;
+use App\Models\Item;
 use Illuminate\Support\Facades\DB;
 
 
@@ -53,8 +54,18 @@ class BookController extends Controller
         // $id を使用してデータベースから該当の BOOK の詳細情報を取得
         $book = Book::find($id);
 
+        // 同じ book_id を持つアイテムを取得
+        $user = Auth::user();
+        $relatedItems = Item::where('user_id', $user->id)
+                            ->where('book_id', $id)
+                            ->get();
+
+        // その他の必要な処理
+        // データをセッションに保存
+        session(['relatedItems' => $relatedItems]);
+
         // ビューにデータを渡して詳細情報を表示
-        return view('books.detail', ['book' => $book]);
+        return view('books.detail', ['book' => $book, 'relatedItems' => $relatedItems]);
     }
 
 
