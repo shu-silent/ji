@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use Illuminate\Contracts\Events\Dispatcher;
 
+
 class AppServiceProvider extends ServiceProvider
 {
     /**

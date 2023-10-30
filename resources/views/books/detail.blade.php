@@ -15,7 +15,11 @@
         @foreach(session('relatedItems') as $item)
             <li>
                 URL: <a href="{{ $item->url }}">{{ $item->url }}</a>
-                <!-- 他のアイテム情報を表示 -->
+                <div>
+                    OGP Title: {{ $item->ogp['title'] }}
+                    OGP Description: {{ $item->ogp['description'] }}
+                    OGP Image: <img src="{{ $item->ogp['image'] }}" alt="OGP Image">
+                </div>
             </li>
         @endforeach
     </ul>

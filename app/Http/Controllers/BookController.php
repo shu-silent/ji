@@ -8,6 +8,10 @@ use App\Models\Book;
 use App\Models\Item;
 use Illuminate\Support\Facades\DB;
 
+use Symfony\Component\BrowserKit\HttpBrowser;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\DomCrawler\Crawler;
+
 
 
 class BookController extends Controller
@@ -34,20 +38,6 @@ class BookController extends Controller
         
     }
 
-    // public function index()
-    // {
-    //     // 現在ログイン中のユーザーに関連するbooksデータを取得
-    //     $user = auth::user();
-
-    //     if($user) {
-    //         $books = DB::table('books')->where('user_id',$user->id)->get();
-    //     }
-        
-    //     config(['adminlte.custom_data' => $books]);
-
-    //     return view('/home');
-    //     // return view('/layouts/adminlte', compact('books'));
-    // }
 
     public function show($id)
     {
@@ -60,6 +50,14 @@ class BookController extends Controller
                             ->where('book_id', $id)
                             ->get();
 
+        // スクレイピングを実行してOGP情報を取得
+        foreach ($relatedItems as $item) {
+            $url = $item->url;
+            $ogp = $this->getOGPInfo($url);
+            // $ogp には 'title', 'description', 'image' などが含まれると仮定
+            $item->ogp = $ogp;
+        }
+        
         // その他の必要な処理
         // データをセッションに保存
         session(['relatedItems' => $relatedItems]);
@@ -68,6 +66,51 @@ class BookController extends Controller
         return view('books.detail', ['book' => $book, 'relatedItems' => $relatedItems]);
     }
 
+    private function getOGPInfo($url)
+    {
 
+        // // HttpClient を使用して Web ページをスクレイピング
+        // $client = HttpClient::create();
+        // $response = $client->request('GET', $url);
 
+        // // Web ページのコンテンツを取得
+        // $content = $response->getContent();
+
+        // // OGP タグから情報を抽出
+        // $ogp = [
+        //     'title' => 'Title of the page',
+        //     'description' => 'Description of the page',
+        //     'image' => 'URL of the image',
+        // ];
+
+        // return $ogp;
+
+        try {
+            // HttpClientを使用してURLにアクセス
+            $client = HttpClient::create();
+            $response = $client->request('GET', $url);
+    
+            // レスポンスのコンテンツを取得
+            $content = $response->getContent();
+    
+            // DomCrawlerを使用してOGP情報を抽出
+            $crawler = new Crawler($content);
+            $ogp = [
+                'title' => $crawler->filterXPath('//meta[@property="og:title"]')->attr('content'),
+                'description' => $crawler->filterXPath('//meta[@property="og:description"]')->attr('content'),
+                'image' => $crawler->filterXPath('//meta[@property="og:image"]')->attr('content'),
+            ];
+    
+            return $ogp;
+        } catch (\Exception $e) {
+            // エラーが発生した場合の処理を追加
+            return [
+                'title' => 'Error',
+                'description' => 'Failed to retrieve OGP information',
+                'image' => '',
+            ];
+   
+            }
+
+    }
 }
