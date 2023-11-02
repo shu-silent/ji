@@ -17,6 +17,8 @@
         @foreach(session('relatedItems') as $item)
             <li style="width: 500px; margin-bottom: 20px; position: relative;"> <!-- セットのdivの大きさを可変、上下の余白追加 -->
                 <a href="{{ $item->url }}" class="btn btn-default" style="text-decoration: none; color: inherit; display: block;">
+                    <!-- × ボタンを追加 -->
+                    <a class="delete-item" data-item-id="{{ $item->id }}" style="position: absolute; top: 10px; right: 10px;">×</a>
                     <div style="width: 100%; height: 100%; padding: 10px; display: flex; gap: 10px;">
                         <div style="width: 30%; height: 100%;">
                             <img src="{{ $item->ogp['image'] }}" alt="No Image" style="width: 100%; height: 100%; object-fit: cover;">
@@ -100,6 +102,28 @@
                 $('#popup').hide();
             });
         });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('.delete-item').on('click', function() {
+                var itemId = $(this).data('item-id');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('delete.item') }}', // ルート名を使用
+                    data: {itemId: itemId, _token: '{{ csrf_token() }}'},
+                    success: function(data) {
+                        // アイテムを非表示にする処理
+                        $(`.delete-item[data-item-id="${itemId}"]`).closest('li').remove();
+                    },
+                    error: function() {
+                        // エラーハンドリング
+                    }
+                });
+            });
+        });
+
     </script>
 
 @stop

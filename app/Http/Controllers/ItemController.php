@@ -76,18 +76,20 @@ class ItemController extends Controller
         ]);
 
         
-        // // 同じ book_id を持つアイテムを取得
-        // $relatedItems = Item::where('user_id', $user->id)
-        //                     ->where('book_id', $request->book_id)
-        //                     ->get();
-
-        // // その他の必要な処理
-        // // データをセッションに保存
-        // session(['relatedItems' => $relatedItems]);
         // リダイレクト先を指定（詳細ページに戻るなど）
 
         return redirect()->route('book.detail', ['id' => $request->book_id]);
 
     }
+
+    public function deleteItem(Request $request)
+    {
+        $itemId = $request->input('itemId');
+        // アイテムを削除する処理（Eloquentを使用する例）
+        Item::where('id', $itemId)->delete();
+        
+        return response()->json(['message' => 'Item deleted successfully']);
+    }
+
     
 }

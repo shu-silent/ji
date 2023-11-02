@@ -12,6 +12,7 @@ use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\DomCrawler\Crawler;
 
+use Illuminate\Support\Facades\Cache;
 
 
 class BookController extends Controller
@@ -39,51 +40,51 @@ class BookController extends Controller
     }
 
 
-    public function show($id)
+    public function show($id, Request $request)
     {
         // $id を使用してデータベースから該当の BOOK の詳細情報を取得
         $book = Book::find($id);
+    
+        // キャッシュキーを生成
+        $cacheKey = 'ogp_info_' . $id;
 
-        // 同じ book_id を持つアイテムを取得
-        $user = Auth::user();
-        $relatedItems = Item::where('user_id', $user->id)
-                            ->where('book_id', $id)
-                            ->get();
-
-        // スクレイピングを実行してOGP情報を取得
-        foreach ($relatedItems as $item) {
-            $url = $item->url;
-            $ogp = $this->getOGPInfo($url);
-            // $ogp には 'title', 'description', 'image' などが含まれると仮定
-            $item->ogp = $ogp;
+        // キャッシュをクリア
+        Cache::forget($cacheKey);
+    
+        // キャッシュが有効かどうかをチェック
+        if (Cache::has($cacheKey)) {
+            // キャッシュが存在する場合、それを使用
+            $cachedData = Cache::get($cacheKey);
+            $relatedItems = $cachedData['relatedItems'];
+        } else {
+            // キャッシュが存在しない場合、スクレイピングを実行してOGP情報を取得
+            $user = Auth::user();
+            $relatedItems = Item::where('user_id', $user->id)
+                                ->where('book_id', $id)
+                                ->get();
+            foreach ($relatedItems as $item) {
+                $url = $item->url;
+                $ogp = $this->getOGPInfo($url);
+                // $ogp には 'title', 'description', 'image' などが含まれると仮定
+                $item->ogp = $ogp;
+            }
+    
+            // \Log::info('Related Items:', $relatedItems);
+            // キャッシュに保存（有効期間を設定することもできます）
+            Cache::put($cacheKey, ['relatedItems' => $relatedItems], now()->addMinutes(1440)); // 60分間キャッシュを保存
         }
-        
+    
         // その他の必要な処理
         // データをセッションに保存
         session(['relatedItems' => $relatedItems]);
-
+    
         // ビューにデータを渡して詳細情報を表示
         return view('books.detail', ['book' => $book, 'relatedItems' => $relatedItems]);
     }
-
+                    
     private function getOGPInfo($url)
     {
 
-        // // HttpClient を使用して Web ページをスクレイピング
-        // $client = HttpClient::create();
-        // $response = $client->request('GET', $url);
-
-        // // Web ページのコンテンツを取得
-        // $content = $response->getContent();
-
-        // // OGP タグから情報を抽出
-        // $ogp = [
-        //     'title' => 'Title of the page',
-        //     'description' => 'Description of the page',
-        //     'image' => 'URL of the image',
-        // ];
-
-        // return $ogp;
 
         try {
             // HttpClientを使用してURLにアクセス
