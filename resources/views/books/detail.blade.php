@@ -5,6 +5,10 @@
 @section('content_header')
     <div style="display: flex; align-items: center;">
         <h1>{{ $book->name }}</h1>
+        <div style="margin-left: 5px">
+            <button id="" class="btn btn-default">削除</button>
+            <button id="" class="btn btn-default">✎</button>
+        </div>
         <button id="add-item-button" class="btn btn-default">+</button>  
     </div>
 @stop
@@ -16,9 +20,8 @@
     <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; align-items: center; gap: 20px;">
         @foreach(session('relatedItems') as $item)
             <li style="width: 500px; margin-bottom: 20px; position: relative;"> <!-- セットのdivの大きさを可変、上下の余白追加 -->
-                <a href="{{ $item->url }}" class="btn btn-default" style="text-decoration: none; color: inherit; display: block;">
                     <!-- × ボタンを追加 -->
-                    <a class="delete-item" data-item-id="{{ $item->id }}" style="position: absolute; top: 10px; right: 10px;">×</a>
+                    <a class="btn btn-default btn btn-light delete-item" data-item-id="{{ $item->id }}" style="position: absolute; top: 10px; right: 10px;">×</a>
                     <div style="width: 100%; height: 100%; padding: 10px; display: flex; gap: 10px;">
                         <div style="width: 30%; height: 100%;">
                             <img src="{{ $item->ogp['image'] }}" alt="No Image" style="width: 100%; height: 100%; object-fit: cover;">
@@ -33,7 +36,23 @@
                             </div>
                         </div>
                     </div>
-                </a>
+                    <div
+                        style="
+                            display: grid;
+                            place-content: center;
+                            width: 30%;
+                            height: 40px;
+                            margin: 24px auto 0px;
+                            border-radius: 9999px;
+                            overflow: hidden;
+                            background: #007bff;
+                        "
+                    >
+                    <a href="{{ $item->url }}">
+                        <p style="font-size: 14px; color: #ffffff; margin: 0;">Vire more</p>
+                    </a>
+                </div>
+
             </li>
         @endforeach
     </ul>

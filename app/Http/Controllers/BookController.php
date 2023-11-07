@@ -48,8 +48,6 @@ class BookController extends Controller
         // キャッシュキーを生成
         $cacheKey = 'ogp_info_' . $id;
 
-        // キャッシュをクリア
-        Cache::forget($cacheKey);
     
         // キャッシュが有効かどうかをチェック
         if (Cache::has($cacheKey)) {
@@ -81,7 +79,7 @@ class BookController extends Controller
         // ビューにデータを渡して詳細情報を表示
         return view('books.detail', ['book' => $book, 'relatedItems' => $relatedItems]);
     }
-                    
+                                
     private function getOGPInfo($url)
     {
 
