@@ -6,8 +6,8 @@
     <div style="display: flex; align-items: center;">
         <h1>{{ $book->name }}</h1>
         <div style="margin-left: 5px">
-            <button id="" class="btn btn-default">削除</button>
-            <button id="" class="btn btn-default">✎</button>
+            <button id="delete-book-button" class="btn btn-default">削除</button>
+            <button id="edit-book-button" class="btn btn-default">✎</button>
         </div>
         <button id="add-item-button" class="btn btn-default">+</button>  
     </div>
@@ -85,6 +85,48 @@
         </form>
     </div>
 
+    <!-- book削除ポップアップのHTML -->
+    <div id="book-delete-popup" class="card card-primary" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; width: 600px; z-index: 2;">
+        <button id="close-popup-button2" class="btn btn-default">×</button>
+        <h2>Bookを削除する</h2>
+            
+            <input type="hidden" name="book_id" id="book-id-field" value="{{ $book->id }}">
+
+            <div class="card-footer">
+                <form method="POST" action="/delete/book/{{ $book->id }}">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">削除</button>
+                </form>
+            </div>
+
+            <!-- 他のフォームフィールド -->
+    </div>
+
+    <!-- book-editのポップアップ -->
+    <div id="book-edit-popup" class="card card-primary" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; width: 600px; z-index: 2;">
+        <button id="close-popup-button3" class="btn btn-default">×</button>
+        <h2>Book名変更</h2>
+        <form id="edit-book-form" method="POST" action="/edit/book/{{ $book->id }}">
+        @csrf
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="name">Book名</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="{{ $book->name }}">
+                </div>
+
+            </div>
+            
+            <input type="hidden" name="book_id" id="book-id-field" value="{{ $book->id }}">
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">変更</button>
+            </div>
+
+            <!-- 他のフォームフィールド -->
+        </form>
+    </div>
+
+
 @stop
 
 @section('css')
@@ -110,6 +152,16 @@
                 // ポップアップを表示する
                 $('#popup').show();
             });
+            // book-deleteのポップアップを表示
+            $('#delete-book-button').click(function () {
+                // ポップアップを表示する
+                $('#book-delete-popup').show();
+            });
+            // edit-bookのポップアップを表示
+            $('#edit-book-button').click(function () {
+                // ポップアップを表示する
+                $('#book-edit-popup').show();
+            });
         });
     </script>
 
@@ -120,9 +172,23 @@
                 // ポップアップを非表示にする
                 $('#popup').hide();
             });
+            // book-deleteの×ボタン
+            $('#close-popup-button2').click(function () {
+                // ポップアップを非表示にする
+                $('#book-delete-popup').hide();
+            });
+            // book-editの×ボタン
+            $('#close-popup-button3').click(function () {
+                // ポップアップを非表示にする
+                $('#book-edit-popup').hide();
+            });
+
         });
     </script>
 
+
+
+        <!-- アイテム削除 -->
     <script>
         $(document).ready(function() {
             $('.delete-item').on('click', function() {

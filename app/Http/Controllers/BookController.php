@@ -112,4 +112,41 @@ class BookController extends Controller
             }
 
     }
+    // book削除、該当book_idをもつアイテム削除
+    public function deleteBook($bookId) {
+        // Bookモデルから該当の本を削除
+        Book::where('id', $bookId)->delete();
+
+        // アイテムモデルから該当のbook_idを持つアイテムを削除
+        Item::where('book_id', $bookId)->delete();
+
+        // 削除が成功したらリダイレクトなどの処理を追加
+
+        return view('home');
+    }
+
+    // book名変更
+    public function editBook(Request $request, $bookId)
+    {
+        // リクエストから送信されたデータを取得
+        $data = $request->all();
+
+        // バリデーション
+        $request->validate([
+            'name' => 'required|max:100',
+        ]);
+
+        // ブックモデルを使用して指定されたブックを取得
+        $book = Book::find($bookId);
+
+        if (!$book) {
+            return redirect()->back()->with('error', '指定されたブックが見つかりません。');
+        }
+
+        // Book名を更新
+        $book->name = $data['name'];
+        $book->save();
+
+        return redirect()->route('book.detail', ['id' => $book->id]);
+    }
 }

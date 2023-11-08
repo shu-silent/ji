@@ -41,3 +41,7 @@ Route::get('/books/{id}', [App\Http\Controllers\BookController::class, 'show'])-
 Route::post('/books/{id}', [App\Http\Controllers\ItemController::class, 'view']);
 
 Route::post('/delete-item',[App\Http\Controllers\ItemController::class, 'deleteItem'])->name('delete.item');
+
+Route::post('/delete/book/{bookId}', [App\Http\Controllers\BookController::class, 'deleteBook'])->name('delete.book');
+
+Route::post('/edit/book/{bookId}', [App\Http\Controllers\BookController::class, 'editBook'])->name('edit.book');
