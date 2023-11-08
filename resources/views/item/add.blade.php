@@ -20,7 +20,7 @@
             @endif
 
             <div class="card card-primary">
-                <form method="POST">
+                <form method="">
                     @csrf
                     <div class="card-body">
                         <div class="form-group">

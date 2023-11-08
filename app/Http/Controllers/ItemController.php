@@ -27,49 +27,6 @@ class ItemController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * 商品一覧
-     */
-    public function index()
-    {
-        // 商品一覧取得
-        // $items = Item::all();
-
-        // ユーザーを特定し、そのユーザーの所有データのみを表示
-        $user = auth::user();
-
-        if($user) {
-            $items = DB::table('items')->where('user_id',$user->id)->get();
-        }
-
-        return view('item.index', compact('items'));
-    }
-
-    /**
-     * 商品登録
-     */
-    public function add(Request $request)
-    {
-        // POSTリクエストのとき
-        if ($request->isMethod('post')) {
-            // バリデーション
-            $this->validate($request, [
-                'name' => 'required|max:100',
-            ]);
-
-            // 商品登録
-            Item::create([
-                'user_id' => Auth::user()->id,
-                'name' => $request->name,
-                'type' => $request->type,
-                'detail' => $request->detail,
-            ]);
-
-            return redirect('/items');
-        }
-
-        return view('item.add');
-    }
 
     public function view($id, Request $request)
     {
