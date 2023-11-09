@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\View;
 use App\Models\Book;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Providers\SecondServiceProvider;
 
 
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
@@ -58,7 +59,7 @@ class AppServiceProvider extends ServiceProvider
     //     });
     // }
 
-        public function boot(Dispatcher $events)
+    public function boot(Dispatcher $events)
     {
         $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
             // メニューにカスタムデータを追加
@@ -78,4 +79,15 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
+}
+
+class SecondServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        // 
+        if (\App::environment(['production'])) {
+            \URL::forceScheme('https');
+        }
+    }
 }
