@@ -84,13 +84,9 @@ class BookController extends Controller
     {
         // $url が存在しない場合は空の配列を返す
         if (empty($url)) {
-            return [
-                'title' => 'Error',
-                'description' => 'Non-existent URL',
-                'image' => '',
-            ];
+            return [];
         }
-
+        
         try {
             // HttpClientを使用してURLにアクセス
             $client = HttpClient::create();
