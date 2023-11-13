@@ -86,7 +86,7 @@ class BookController extends Controller
         if (empty($url)) {
             return [
                 'title' => 'Error',
-                'description' => 'Invalid URL',
+                'description' => 'Non-existent URL',
                 'image' => '',
             ];
         }
