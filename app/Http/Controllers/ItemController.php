@@ -84,11 +84,7 @@ class ItemController extends Controller
     {
         // $url が存在しない場合は空の配列を返す
         if (empty($url)) {
-            return [
-                'title' => 'Error',
-                'description' => 'Invalid URL',
-                'image' => '',
-            ];
+            return;
         }        
 
         try {
