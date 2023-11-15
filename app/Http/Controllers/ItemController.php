@@ -82,16 +82,22 @@ class ItemController extends Controller
 
     private function getOGPInfo($url)
     {
-        // $url が存在しない場合は空の配列を返す
-        if (empty($url)) {
-            return;
-        }        
-
         try {
             // HttpClientを使用してURLにアクセス
             $client = HttpClient::create();
             $response = $client->request('GET', $url);
     
+            // レスポンスのステータスコードを確認
+            $statusCode = $response->getStatusCode();
+            if ($statusCode !== 200) {
+                // ステータスコードが 200 以外の場合はエラーメッセージを返す
+                return [
+                    'title' => 'Error',
+                    'description' => 'Failed to retrieve OGP information: HTTP status code ' . $statusCode,
+                    'image' => '',
+                ];
+            }
+            
             // レスポンスのコンテンツを取得
             $content = $response->getContent();
     
